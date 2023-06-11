@@ -1,0 +1,27 @@
+<% @items.each do |item| %>
+<div class="list-group" style = "height: 30vw;">
+ <div class="border-solid"> 
+    
+   <%= image_tag item.medium_image_url, style:"height: 10vw;" %>
+   <%= item.title %>
+   <%= item.title_kana %>
+   <%= item.isbn %>
+   <%= item.review_count %>
+   <%= item.sales_date.to_i %>
+   <% if /\d+$/ === item.title %>
+     <% if RakutenWebService::Books::Book.search(title: "#{$`} 10",outOfStockFlag: 1).count > 0 %>
+       10巻以上
+     <% else %>
+       10巻以下
+     <% end %>
+   <% end %>
+   <% if /\（\d+\）$/ === item.title %>
+     <% if RakutenWebService::Books::Book.search(title: "#{$`}（10)",outOfStockFlag: 1).count > 0 %>
+       10巻以上
+     <% else %>
+       10巻以下
+     <% end %>
+   <% end %>
+</div>
+</div>
+<% end %>

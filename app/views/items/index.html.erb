@@ -1,0 +1,23 @@
+<% if @item.present? %>
+  <div class="border-solid border-t-2 border-purple-900" style="width:70vw;">
+  <% @item.each_with_index do |n,i| %>
+  <div class="border-solid border-2 md:border-t-0 border-purple-900">
+    <div class="flex">
+      <div>
+      <% img_name = "IMG_0940.jpg" %>
+      <%= image_tag img_name, style:"width:10vw;"%>
+      </div>
+      <div class="block">
+        <div class= "font-sans font-semibold text-4xl">
+          <%= n.title %>
+          <%= n.author %>
+        </div>
+        <div>
+        ISBN:<%= n.isbn %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <% end %>
+  </div>
+<% end %>

@@ -1,0 +1,23 @@
+<% if @followings.present? %>
+  <%= @followings.count %>
+  <div class="border-solid border-t-2 border-purple-900 my-3.5">
+    <% @followings.each do |following| %>
+      <div class="border-solid border-2 md:border-t-0 border-purple-900">
+        <div class="flex">
+          <div class="block">
+            <div>
+              <%= following.name %>
+            </div>
+          </div>
+          <div>
+          <% if current_user.followings.exists?(id: following.id) %>
+          フォロー済
+          <% elsif following.id != current_user.id %>
+            <%= button_to "フォローする", user_relationships_path(following.id), method: :post %>
+          <% end %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% end %>

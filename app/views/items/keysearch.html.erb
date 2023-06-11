@@ -1,0 +1,63 @@
+<% request.url.match(/keysearch/) %>
+<h2>keysearch</h2>
+<div class="search-box">
+    <%= form_with url: items_keysearch_path, method: :get, remote: true do |f| %>
+    <div class="form-group">
+        <%= f.text_field :keyword, value: params[:keyword], class: "form-control" %>
+        <%=  f.select(:genre, ["少年", "少女", "青年","レディース","文庫","その他"]) %>
+        <%= f.submit '製品名を検索', class: "px-2 py-1 bg-blue-400 text-xl text-white font-semibold rounded hover:bg-blue-500" %>
+    </div>
+    <% end %>
+</div>
+<% if @itema.present? %>
+  <div class="border-solid border-t-2 border-purple-900">
+  <% @itema.each_with_index do |n,i| %>
+   <% if @trial[i] == "rejected" %>
+     <div class="border-solid border-2 md:border-t-0 border-purple-900 bg-blue-600">
+   <% else %>
+     <div class="border-solid border-2 md:border-t-0 border-purple-900">
+   <% end %>
+    <div class="flex">
+      <div>
+        <%= image_tag n.medium_image_url%>
+      </div>
+      <div class="block">
+        <div>
+          <%= n.title %>
+        </div>
+        <div>
+          <%= n.isbn %>
+        </div>
+        <% if  current_user != nil %>
+        <%= button_to bookmarks_path(isbn: n.isbn, item: @item_dummy,modoru: "#{$`}search"),class:"float-right px-2 py-1 bg-blue-400 text-xl text-white font-semibold rounded hover:bg-blue-500", method: :post do %>
+         気になる
+        <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <% end %>
+  </div>
+<% end %>
+<% if @item_reborn != nil %>
+  <div class="border-solid border-t-2 border-purple-900">
+  <% @item_reborn.flatten.each_slice(3).to_a.each do |i| %>
+    <div class="border-solid border-2 md:border-t-0 border-purple-900">
+      <div class="flex">
+        <div>
+          <%= image_tag i[2]%>
+        </div>
+        <div class="block">
+          <div>
+            <%= i[0] %>
+          </div>
+          <div>
+            <%= i[1] %>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+  </div>
+<% end %>
+

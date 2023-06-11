@@ -1,0 +1,66 @@
+<% request.url.match(/search/) %>
+<div class="search-box">
+    <%= form_with url: items_search_path, method: :get, remote: true do |f| %>
+      <div class="form-group">
+        <%= f.text_field :publisher, list: 'list-name', class: "form-control" %>
+        <datalist id="list-name">
+          <option value="集英社">
+          <option value="講談社">
+          <option value="スクウェア・エニックス">
+        </datalist>
+        <%=  f.select(:genre, ["漫画全般","少年", "少女", "青年","レディース","文庫","その他"]) %>
+        <%= f.submit '製品名を検索', class: "px-2 py-1 bg-blue-400 text-xl text-white font-semibold rounded hover:bg-blue-500" %>
+    </div>
+    <% end %>
+</div>
+<% if @item.present? %>
+  <div class="border-solid border-t-2 border-purple-900 my-3.5">
+  <% @item.each_with_index do |n,i| %>
+  <div class="border-solid border-2 md:border-t-0 border-purple-900">
+    <div class="flex">
+      <div>
+        <%= image_tag n.medium_image_url%>
+      </div>
+      <div class="block">
+        <div>
+          <%= n.title %>
+        </div>
+        <div>
+          <%= n.isbn %>
+          <%= n.publisher_name %>
+        </div>
+        <% if  current_user != nil %>
+        <div>
+        <%= button_to bookmarks_path(isbn: n.isbn, item: @item_dummy,modoru: "#{$`}search"),class:"float-right px-2 py-1 bg-blue-400 text-xl text-white font-semibold rounded hover:bg-blue-500", method: :post do %>
+         気になる
+        <% end %>
+        </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <% end %>
+  </div>
+<% end %>
+<% if @item_reborn != nil %>
+  <div class="border-solid border-t-2 border-purple-900 my-3.5">
+  <% @item_reborn.flatten.each_slice(3).to_a.each do |i| %>
+    <div class="border-solid border-2 md:border-t-0 border-purple-900">
+      <div class="flex">
+        <div>
+          <%= image_tag i[2]%>
+        </div>
+        <div class="block">
+          <div>
+            <%= i[0] %>
+          </div>
+          <div>
+            <%= i[1] %>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+  </div>
+<% end %>
+
