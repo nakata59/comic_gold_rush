@@ -1,27 +1,7 @@
-<% provide(:title, 'Your Page Title') %>
-<h>気になる</h>
-
-<% if @books.present? %>
+<% if @user_books.present? %>
   <div class="border-solid border-t-2 border-purple-900">
-    <% @books.each do |book| %>
-      <div class="border-solid border-2 md:border-t-0 border-purple-900">
-        <div class="flex">
-          <div>
-            <%= image_tag book.medium_image_url%>
-          </div>
-          <div class="block">
-            <div>
-              <%= book.title %>
-            </div>
-            <div>
-              <%= book.isbn %>
-            </div>
-          </div>
-        </div>
-   
-        <%= link_to 'Share on Twitter', "https://twitter.com/share?url=#{request.url}&text=#{current_user.name}さんは%0a#{book.title}と出会いました%0a", 
-  title: 'Twitter', class: 'fab fa-twitter', target: '_blank' %>
-      </div>
+    <% @user_books.each do |n| %>
+      <%= render partial: 'item', locals: { n: n } %>
     <% end %>
    </div>
 
