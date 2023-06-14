@@ -3,6 +3,11 @@ class ItemsController < ApplicationController
       @item = RakutenWebService::Books::Book.search(booksGenreId: "001001001",title: "BLEACH")
     end
     def search
+      if current_user.present?
+        @redirect = "search"
+        @bookmarks = Bookmark.where(user_id: current_user.id)
+        @books = current_user.books
+      end
       @item_reborn = params[:item]
       if params[:publisher].present? || params[:genre].present?
         genre_list = {
@@ -42,7 +47,7 @@ class ItemsController < ApplicationController
         while @item.count < 3 && idx <= 50
           a = rand(1..a_max)
           items = @itemss.page(a)
-          break if items.blank?
+          break if items.response['Items'].blank?
           @flag = 3
           item = items.to_a.sample
           next if item.blank?
@@ -66,13 +71,18 @@ class ItemsController < ApplicationController
     
         if @item.present?
           @item_dummy = @item.map do |i|
-            [i.title, i.isbn, i.medium_image_url]
+            [i.title, i.isbn, i.large_image_url, i.author, i.publisher_name]
           end
         end
       end
     end #def
   
     def keysearch
+      if current_user.present?
+        @redirect = "keysearch"
+        @bookmarks = Bookmark.where(user_id: current_user.id)
+        @books = current_user.books
+      end
       @item_reborn = params[:item]
       if params[:keyword] && params[:keyword].size != 0
         @itema = []
@@ -133,20 +143,16 @@ class ItemsController < ApplicationController
           end  
         end 
         idx += 1
-        p rejected
-        p selected
+        #p rejected
+        #p selected
         end # while  
       end # if
-      if @itema != nil
-        @item_dummy = []
-        @itemss.each do |i|
-          @item_part = []
-          @item_part.push(i.title)
-          @item_part.push(i.isbn)
-          @item_part.push(i.medium_image_url)
-          @item_dummy.push(@item_part)
-        end
-       end #if @item != nil
+      #if @itema.present?
+       # @item_dummy = @itema.map do |i|
+        #  [i.isbn]
+        #end
+      #end
+
     end
     private
 
