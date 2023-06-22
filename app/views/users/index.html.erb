@@ -11,7 +11,7 @@
             <%= user.name %>
           </option>
         <% end %>
-        <%= text_field_tag :users, User.all.pluck(:user_id).join(",") + ",", class:"hidden" %>
+        <%= text_field_tag :users, User.all.pluck(:id), class:"hidden" %>
       </select>
     </div>
     <% end %>
