@@ -1,0 +1,10 @@
+
+  <%= button_to bookmarks_path(isbn: isbn),
+               id: "js-favorite-button-for-item-#{isbn}", 
+               class:"mx-[2.125vw] px-2 py-1 bg-blue-400 text-xl text-white font-semibold rounded hover:bg-blue-500",
+               style:"width:13vw; font-size:2vw;", 
+               method: :delete,
+               remote: true,
+               data: { type: :script }  do %>
+    UnFavorite
+  <% end %>

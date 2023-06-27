@@ -1,0 +1,7 @@
+<turbo-frame id="favorite-button-<%= isbn %>">
+  <% if  current_user != nil && favorited %>
+    <%= render 'shared/unfavorite', { isbn: isbn } %>
+  <% elsif current_user != nil %>
+    <%= render 'shared/favorite', { isbn: isbn } %>
+  <% end %>
+</turbo-frame>

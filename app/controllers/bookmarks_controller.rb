@@ -18,31 +18,22 @@ class BookmarksController < ApplicationController
       if Book.find_by(isbn: params[:isbn]) == nil
         Book.create(isbn: params[:isbn])
       end
-      Bookmark.create(user_id:current_user.id, book_id:Book.find_by(isbn: params[:isbn]).id)
-      item = params[:item]
-      r = params[:modoru]
- 
-      if r.match(/keysearch/)
-       redirect_to items_keysearch_path(item: item)
-      elsif r.match(/search/)
-        redirect_to items_search_path(item: item)
-      else
-        redirect_to user_bookmarks_url(user_id: params[:user])
-      end
+      @user = current_user
+      @isbn = params[:isbn]
+      @bookmarks = @user.bookmarks
+      @bookmark = Bookmark.create(user_id:current_user.id, book_id:Book.find_by(isbn: params[:isbn]).id)
+      @books = current_user.books
+      render turbo_stream: turbo_stream.replace("favorite-button-#{@isbn}", partial: 'shared/favorite_button', locals: { isbn: @isbn, favorited: true })
     end
-  
+    
     def destroy
-      @bookmark = Bookmark.find(params[:id])
-      @bookmark.destroy
+      @user = current_user
+      @bookmark = Bookmark.where(book_id: Book.find_by(isbn: params[:isbn]).id, user_id: @user.id)
+      @bookmark.first.destroy
+      @books = current_user.books
       item = params[:item]
-      r = params[:modoru]
-
-      if r.match(/keysearch/)
-       redirect_to items_keysearch_path(item: item)
-      elsif r.match(/search/)
-        redirect_to items_search_path(item: item)
-      else
-        redirect_to user_bookmarks_url(user_id: params[:user])
-      end
+      @isbn = params[:isbn]
+      @bookmarks = @user.bookmarks
+      render turbo_stream: turbo_stream.replace("favorite-button-#{@isbn}", partial: 'shared/favorite_button', locals: { isbn: @isbn,favorited: false })
     end
 end

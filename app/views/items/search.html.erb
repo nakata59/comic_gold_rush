@@ -14,56 +14,26 @@
           ジャンル:
           <%=  f.select(:genre, ["漫画全般","少年", "少女", "青年","レディース","文庫","その他"]) %>
         </div>
-        <%= f.submit '漫画を検索', class: "px-2 py-1 bg-blue-400 text-xl text-white font-semibold rounded hover:bg-blue-500" %>
+        <%= f.submit '漫画を検索', class: "px-2 py-1 bg-blue-400 text-xl text-white font-semibold rounded hover:bg-blue-500", onclick: "buttonClick()" %>
     </div>
     <% end %>
+</div>
+<div id="loader" class="hidden">
+<script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+<lottie-player src="https://assets6.lottiefiles.com/packages/lf20_a2chheio.json"  background="#FFFFFF"  speed="0.5"  style="width: 80vw; height: 20vw;"  loop  autoplay></lottie-player>
 </div>
 <% if @item.present? %>
   <div class="my-2 border-solid border-t-2 border-purple-900" style="width:85vw;">
     <% @item.each_with_index do |n,i| %>
-      <%= render partial: 'item', locals: { n: n } %>
+      <%= render partial: 'shared/item', locals: { n: n } %>
     <% end %>
   </div>
 <% end %>
-<% if @item_reborn != nil %>
-  <div class="border-solid border-t-2 border-purple-900 my-3.5">
-    <% @item_reborn.flatten.each_slice(5).to_a.each do |i| %>
-      <div class="border-solid border-2 md:border-t-0 border-purple-900 bg-gray-300", style ="height: 35vw;">
-      <div class="flex">
-        <div>
-          <%= image_tag i[2], class:"m-[3.125vw] drop-shadow-2xl",style:"height:30vw; width: auto; max-width: 20vw;"%>
-        </div>
-        <div class="block">
-          <div class= "mx-[2.125vw]">
-            <div>
-              <p class= "text-white my-[1.525vw] drop-shadow-2xl font-serif" style="font-size:4vw; height:auto;"><%= i[0] %></p>
-            </div>
-            <p class= "text-white my-[1.525vw] drop-shadow-2xl font-serif" style="font-size:2.5vw;"><%= i[1] %></p>
-            <p class= "text-white my-[1.525vw] drop-shadow-2xl font-serif" style="font-size:2.5vw;"><%= i[3] %></p>
-            <p class= "text-white my-[1.525vw] drop-shadow-2xl" style="font-size:1.5vw;">ISBN:<%= i[4] %></p>
-          </div>
-          <div class= "flex">
-          <% if current_user != nil && @books.where(isbn:i[1].to_i).count > 0 %>
-            <%= button_to bookmarks_path(id: @bookmarks.find_by(book_id: @books.find_by(isbn: i[1]).id).id, isbn: i[1], item: @item_reborn,modoru: "#{$`}search"),class:"mx-[2.125vw] px-2 py-1 bg-blue-400 text-xl text-white font-semibold rounded hover:bg-blue-500",style:"width:13vw; font-size:2vw;", method: :delete do %>
-              UnFavorite
-            <% end %>
-          <% elsif current_user != nil %> 
-            <%= button_to bookmarks_path(isbn: i[1], item: @item_reborn,modoru: "#{$`}search"),class:"mx-[2.125vw] px-2 py-1 bg-blue-400 text-xl text-white font-semibold rounded hover:bg-blue-500",style:"width:10vw; font-size:2vw;", method: :post do %>
-              Favorite
-            <% end %>
-          <% end %>
-          <% if current_user.present? %>
-            <%= link_to 'Share on Twitter', "https://twitter.com/share?url=https://comicgoldrush.fly.dev&text=#{current_user.name}さんは%0a#{i[1]}と出会いました%0a", 
-            title: 'Twitter',class:"mx-[2.125vw] px-2 py-1 bg-blue-400 text-xl text-white font-semibold rounded hover:bg-blue-500",style:"width:15vw; font-size:1.6vw;", target: '_blank' %>
-          <% else %>
-            <%= link_to 'Share on Twitter', "https://twitter.com/share?url=https://comicgoldrush.fly.dev&text=ゲストさんは%0a#{i[1]}と出会いました%0a", 
-            title: 'Twitter',class:"mx-[2.125vw] px-2 py-1 bg-blue-400 text-xl text-white font-semibold rounded hover:bg-blue-500",style:"width:15vw; font-size:1.6vw;", target: '_blank' %>
-          <% end %>
-        </div>
-      </div>
-    </div>
-  </div>
-  <% end %>
-  </div>
-<% end %>
+
+<script>
+function buttonClick() {
+  let element = document.getElementById("loader");
+  element.classList.remove("hidden");
+}
+</script>
 
