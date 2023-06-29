@@ -22,9 +22,9 @@
 <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 <lottie-player src="https://assets6.lottiefiles.com/packages/lf20_a2chheio.json"  background="#FFFFFF"  speed="0.5"  style="width: 80vw; height: 20vw;"  loop  autoplay></lottie-player>
 </div>
-<% if @item.present? %>
+<% if @resultitems.present? %>
   <div class="my-2 border-solid border-t-2 border-purple-900" style="width:85vw;">
-    <% @item.each_with_index do |n,i| %>
+    <% @resultitems.flatten.each_slice(5).to_a.each do |n| %>
       <%= render partial: 'shared/item', locals: { n: n } %>
     <% end %>
   </div>

@@ -1,6 +1,6 @@
 <% if @user_books.present? %>
   <div class="border-solid border-t-2 border-purple-900">
-    <% @user_books.each do |n| %>
+    <% @user_books.flatten.each_slice(5).to_a.each do |n| %>
       <%= render partial: 'shared/item', locals: { n: n } %>
     <% end %>
    </div>
