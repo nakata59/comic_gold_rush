@@ -8,7 +8,6 @@ class ItemsController < ApplicationController
         @bookmarks = Bookmark.where(user_id: current_user.id)
         @books = current_user.books
       end
-      @item_reborn = params[:item]
       if params[:publisher].present? || params[:genre].present?
         genre_list = {
           "漫画全般" => "001001",
@@ -68,12 +67,19 @@ class ItemsController < ApplicationController
           @item << item
           idx += 1
         end
-    
-        if @item.present?
-          @item_dummy = @item.map do |i|
-            [i.title, i.isbn, i.large_image_url, i.author, i.publisher_name]
-          end
-        end
+        @resultitems = []
+        @item.map!{|v|  v = v.isbn} 
+        @item.each do |itemb|
+          url = "https://api.openbd.jp/v1/get?isbn=%20#{itemb}"
+          uri = URI(url)
+          response = Net::HTTP.get(uri)
+          data = JSON.parse(response)
+          @resultitems.push(data[0].values_at("summary")[0].values_at("isbn")[0])
+          @resultitems.push(data[0].values_at("summary")[0].values_at("title")[0])
+          @resultitems.push(data[0].values_at("summary")[0].values_at("author")[0])
+          @resultitems.push(data[0].values_at("summary")[0].values_at("cover")[0])
+          @resultitems.push(data[0].values_at("summary")[0].values_at("publisher")[0])
+        end 
       end
     end #def
   
@@ -145,7 +151,20 @@ class ItemsController < ApplicationController
         idx += 1
         #p rejected
         #p selected
-        end # while  
+        end # while 
+        @resultitems = []
+        @itema.map!{|v|  v = v.isbn} 
+          @itema.each do |itemb|
+            url = "https://api.openbd.jp/v1/get?isbn=%20#{itemb}"
+            uri = URI(url)
+            response = Net::HTTP.get(uri)
+            data = JSON.parse(response)
+            @resultitems.push(data[0].values_at("summary")[0].values_at("isbn")[0])
+            @resultitems.push(data[0].values_at("summary")[0].values_at("title")[0])
+            @resultitems.push(data[0].values_at("summary")[0].values_at("author")[0])
+            @resultitems.push(data[0].values_at("summary")[0].values_at("cover")[0])
+            @resultitems.push(data[0].values_at("summary")[0].values_at("publisher")[0])
+          end 
       end # if
       #if @itema.present?
        # @item_dummy = @itema.map do |i|

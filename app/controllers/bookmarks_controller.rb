@@ -9,9 +9,16 @@ class BookmarksController < ApplicationController
       @bookmarks = @user.bookmarks
       @user_books = []
       @user.books.each do |book|
-        item = RakutenWebService::Books::Book.search(isbn: book.isbn)
-        @user_books.push(item.first)
-      end
+        url = "https://api.openbd.jp/v1/get?isbn=%20#{book.isbn}"
+        uri = URI(url)
+        response = Net::HTTP.get(uri)
+        data = JSON.parse(response)
+        @user_books.push(data[0].values_at("summary")[0].values_at("isbn")[0])
+        @user_books.push(data[0].values_at("summary")[0].values_at("title")[0])
+        @user_books.push(data[0].values_at("summary")[0].values_at("author")[0])
+        @user_books.push(data[0].values_at("summary")[0].values_at("cover")[0])
+        @user_books.push(data[0].values_at("summary")[0].values_at("publisher")[0])
+      end 
     end
   
     def create

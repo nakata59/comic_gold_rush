@@ -1,24 +1,24 @@
 <div class="border-solid border-2 md:border-t-0 border-purple-900 bg-gray-300", style ="height: 35vw;">
     <div class="flex">
       <div>
-        <%= image_tag n.large_image_url, class:"m-[3.125vw] drop-shadow-2xl",style:"height:30vw; width: auto; max-width: 20vw;"%>
+        <%= image_tag n[3], class:"m-[3.125vw] drop-shadow-2xl",style:"height:30vw; width: auto; max-width: 20vw;"%>
       </div>
       <div class="block">
         <div class= "mx-[2.125vw]">
           <div>
-            <p class= "text-white my-[1.525vw] drop-shadow-2xl font-serif" style="font-size:4vw; height:auto;"><%= n.title %></p>
+            <p class= "text-white my-[1.525vw] drop-shadow-2xl font-serif" style="font-size:4vw; height:auto;"><%= n[1] %></p>
           </div>
-          <p class= "text-white my-[1.525vw] drop-shadow-2xl font-serif" style="font-size:2.5vw;"><%= n.author %></p>
-          <p class= "text-white my-[1.525vw] drop-shadow-2xl font-serif" style="font-size:2.5vw;"><%= n.publisher_name %></p>
-          <p class= "text-white my-[1.525vw] drop-shadow-2xl" style="font-size:1.5vw;">ISBN:<%= n.isbn %></p>
+          <p class= "text-white my-[1.525vw] drop-shadow-2xl font-serif" style="font-size:2.5vw;"><%= n[2] %></p>
+          <p class= "text-white my-[1.525vw] drop-shadow-2xl font-serif" style="font-size:2.5vw;"><%= n[4] %></p>
+          <p class= "text-white my-[1.525vw] drop-shadow-2xl" style="font-size:1.5vw;">ISBN:<%= n[0] %></p>
         </div>
         <div class= "flex">
         <% if current_user.present? %>
-          <%= render 'shared/favorite_button', { isbn: n.isbn, favorited: @books.where(isbn:n.isbn.to_i).count > 0 } %>
-          <%= link_to 'Share on Twitter', "https://twitter.com/share?url=https://comicgoldrush.fly.dev&text=#{current_user.name}さんは%0a#{n.title}と出会いました%0a", 
+          <%= render 'shared/favorite_button', { isbn: n[0], favorited: @books.where(isbn:n[0].to_i).count > 0 } %>
+          <%= link_to 'Share on Twitter', "https://twitter.com/share?url=https://comicgoldrush.fly.dev&text=#{current_user.name}さんは%0a#{n[1]}と出会いました%0a", 
           title: 'Twitter',class:"mx-[2.125vw] px-2 py-1 bg-blue-400 text-xl text-white font-semibold rounded hover:bg-blue-500",style:"width:15vw; font-size:1.6vw;", target: '_blank' %>
         <% else %>
-        <%= link_to 'Share on Twitter', "https://twitter.com/share?url=https://comicgoldrush.fly.dev&text=ゲストさんは%0a#{n.title}と出会いました%0a", 
+        <%= link_to 'Share on Twitter', "https://twitter.com/share?url=https://comicgoldrush.fly.dev&text=ゲストさんは%0a#{n[1]}と出会いました%0a", 
         title: 'Twitter',class:"mx-[2.125vw] px-2 py-1 bg-blue-400 text-xl text-white font-semibold rounded hover:bg-blue-500",style:"width:15vw; font-size:1.6vw;", target: '_blank' %>
         <% end %>
         </div>
