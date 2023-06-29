@@ -10,6 +10,15 @@
     <%= javascript_importmap_tags %>
     <%= display_meta_tags(default_meta_tags) %>
   </head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-2XGZZ9J31Z"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-2XGZZ9J31Z');
+  </script>
 
   <body>
     <main class="container mx-auto mt-28 px-5">
