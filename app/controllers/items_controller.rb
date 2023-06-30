@@ -74,11 +74,21 @@ class ItemsController < ApplicationController
           uri = URI(url)
           response = Net::HTTP.get(uri)
           data = JSON.parse(response)
-          @resultitems.push(data[0].values_at("summary")[0].values_at("isbn")[0])
-          @resultitems.push(data[0].values_at("summary")[0].values_at("title")[0])
-          @resultitems.push(data[0].values_at("summary")[0].values_at("author")[0])
-          @resultitems.push(data[0].values_at("summary")[0].values_at("cover")[0])
-          @resultitems.push(data[0].values_at("summary")[0].values_at("publisher")[0])
+          if data[0] == nil
+            p "openbd済まぬ"
+            item = RakutenWebService::Books::Book.search(isbn: itemb)
+            @resultitems.push(item.first.isbn)
+            @resultitems.push(item.first.title)
+            @resultitems.push(item.first.author)
+            @resultitems.push(item.first.large_image_url)
+            @resultitems.push(item.first.publisher_name)
+          else
+            @resultitems.push(data[0].values_at("summary")[0].values_at("isbn")[0])
+            @resultitems.push(data[0].values_at("summary")[0].values_at("title")[0])
+            @resultitems.push(data[0].values_at("summary")[0].values_at("author")[0])
+            @resultitems.push(data[0].values_at("summary")[0].values_at("cover")[0])
+            @resultitems.push(data[0].values_at("summary")[0].values_at("publisher")[0])
+          end
         end 
       end
     end #def
@@ -159,11 +169,21 @@ class ItemsController < ApplicationController
             uri = URI(url)
             response = Net::HTTP.get(uri)
             data = JSON.parse(response)
-            @resultitems.push(data[0].values_at("summary")[0].values_at("isbn")[0])
-            @resultitems.push(data[0].values_at("summary")[0].values_at("title")[0])
-            @resultitems.push(data[0].values_at("summary")[0].values_at("author")[0])
-            @resultitems.push(data[0].values_at("summary")[0].values_at("cover")[0])
-            @resultitems.push(data[0].values_at("summary")[0].values_at("publisher")[0])
+            if data[0] == nil
+              p "openbd済まぬ"
+              item = RakutenWebService::Books::Book.search(isbn: itemb)
+              @resultitems.push(item.first.isbn)
+              @resultitems.push(item.first.title)
+              @resultitems.push(item.first.author)
+              @resultitems.push(item.first.large_image_url)
+              @resultitems.push(item.first.publisher_name)
+            else
+              @resultitems.push(data[0].values_at("summary")[0].values_at("isbn")[0])
+              @resultitems.push(data[0].values_at("summary")[0].values_at("title")[0])
+              @resultitems.push(data[0].values_at("summary")[0].values_at("author")[0])
+              @resultitems.push(data[0].values_at("summary")[0].values_at("cover")[0])
+              @resultitems.push(data[0].values_at("summary")[0].values_at("publisher")[0])
+            end
           end 
       end # if
       #if @itema.present?
