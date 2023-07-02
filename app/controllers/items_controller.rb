@@ -15,8 +15,8 @@ class ItemsController < ApplicationController
           "少女" => "001001002",
           "青年" => "001001003",
           "レディース" => "001001004",
-          "文庫" => "001001005",
-          "その他" => "001001006"
+          "文庫" => "001001006",
+          "その他" => "001001012"
         }
         sort = ["standard","reviewAverage"].sample
         query = { booksGenreId: "001001", sort: sort,elements: "title,isbn,booksGenreId,reviewCount,publisherName"}
@@ -102,7 +102,7 @@ class ItemsController < ApplicationController
       @item_reborn = params[:item]
       if params[:keyword] && params[:keyword].size != 0
         @itema = []
-        genre_list = {"少年" => "001001001","少女" => "001001002", "青年" => "001001003", "レディース" => "001001004","文庫" => "001001005", "その他" => "001001006"}
+        genre_list = {"少年" => "001001001","少女" => "001001002", "青年" => "001001003", "レディース" => "001001004","文庫" => "001001006", "その他" => "001001012"}
         if params[:genre] == nil
           genre = "001001"
         else
