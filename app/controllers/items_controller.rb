@@ -1,101 +1,103 @@
 class ItemsController < ApplicationController
   def index
-      @item = RakutenWebService::Books::Book.search(booksGenreId: "001001001",title: "BLEACH")
+    @item = RakutenWebService::Books::Book.search(booksGenreId: '001001001', title: 'BLEACH')
+  end
+
+  def search
+    if current_user.present?
+      @redirect = 'search'
+      @bookmarks = Bookmark.where(user_id: current_user.id)
+      @books = current_user.books
     end
-    def search
-      if current_user.present?
-        @redirect = "search"
-        @bookmarks = Bookmark.where(user_id: current_user.id)
-        @books = current_user.books
+    if params[:publisher].present? || params[:genre].present?
+      genre_list = {
+        '漫画全般' => '001001',
+        '少年' => '001001001',
+        '少女' => '001001002',
+        '青年' => '001001003',
+        'レディース' => '001001004',
+        '文庫' => '001001006',
+        'その他' => '001001012'
+      }
+      sort = ['standard', 'reviewAverage'].sample
+      query = { booksGenreId: '001001', sort: sort, elements: "title,isbn,booksGenreId,reviewCount,publisherName" }
+      query[:publisherName] = params[:publisher] if params[:publisher].present?
+      query[:booksGenreId] = genre_list[params[:genre]] if params[:genre].present?
+      @itemss = RakutenWebService::Books::Book.search(query)
+      @hantei = []
+      @item = []
+      idx = 0
+      if @itemss.page(100).response['Items'] != nil
+        a_max = 100
+      elsif @itemss.page(50).response['Items'] != nil
+        a_max = 50
+      elsif @itemss.page(20).response['Items'] != nil
+        a_max = 20
+      elsif @itemss.page(5).response['Items'] != nil
+        a_max = 5
+      elsif @itemss.page(4).response['Items'] != nil
+        a_max = 4
+      elsif @itemss.page(3).response['Items'] != nil
+        a_max = 3
+      elsif @itemss.page(2).response['Items'] != nil
+        a_max = 2
+      else
+        a_max = 1
       end
-      if params[:publisher].present? || params[:genre].present?
-        genre_list = {
-          "漫画全般" => "001001",
-          "少年" => "001001001",
-          "少女" => "001001002",
-          "青年" => "001001003",
-          "レディース" => "001001004",
-          "文庫" => "001001006",
-          "その他" => "001001012"
-        }
-        sort = ["standard","reviewAverage"].sample
-        query = { booksGenreId: "001001", sort: sort,elements: "title,isbn,booksGenreId,reviewCount,publisherName"}
-        query[:publisherName] = params[:publisher] if params[:publisher].present?
-        query[:booksGenreId] = genre_list[params[:genre]] if params[:genre].present?
-        @itemss = RakutenWebService::Books::Book.search(query)
-        @hantei = []
-        @item = []
-        idx = 0
-        if @itemss.page(100).response['Items'] != nil 
-          a_max = 100
-        elsif @itemss.page(50).response['Items'] != nil
-          a_max = 50
-        elsif @itemss.page(20).response['Items'] != nil
-          a_max = 20
-        elsif @itemss.page(5).response['Items'] != nil
-          a_max = 5
-        elsif @itemss.page(4).response['Items'] != nil
-          a_max = 4
-        elsif @itemss.page(3).response['Items'] != nil
-          a_max = 3
-        elsif @itemss.page(2).response['Items'] != nil
-          a_max = 2
+      while @item.count < 3 && idx <= 50
+        a = rand(1..a_max)
+        items = @itemss.page(a)
+        break if items.response['Items'].blank?
+
+        @flag = 3
+        item = items.to_a.sample
+        next if item.blank?
+
+        p item.title
+        janl(item)
+        aitem = nil
+        trial(item)
+        if @flag == 1
+          p '削除'
+          next
+        elsif @flag == 3
+          p 'ノイズ'
+          next
         else
-          a_max = 1
+          p '通し'
         end
-        while @item.count < 3 && idx <= 50
-          a = rand(1..a_max)
-          items = @itemss.page(a)
-          break if items.response['Items'].blank?
-          @flag = 3
-          item = items.to_a.sample
-          next if item.blank?
-          p item.title
-          janl(item)
-          aitem = nil
-          trial(item)
-          if @flag == 1
-            p "削除"
-            next
-          elsif @flag == 3
-            p "ノイズ"
-            next
-          else
-            p "通し"
-          end
-    
-          @item << item
-          idx += 1
-        end
-        @resultitems = []
-        @item.map!{|v|  v = v.isbn} 
-        @item.each do |itemb|
-          url = "https://api.openbd.jp/v1/get?isbn=%20#{itemb}"
-          uri = URI(url)
-          response = Net::HTTP.get(uri)
-          data = JSON.parse(response)
-          if data[0] == nil
-            p "openbd済まぬ"
-            item = RakutenWebService::Books::Book.search(isbn: itemb)
-            @resultitems.push(item.first.isbn)
-            @resultitems.push(item.first.title)
-            @resultitems.push(item.first.author)
-            @resultitems.push(item.first.large_image_url)
-            @resultitems.push(item.first.publisher_name)
-          else
-            @resultitems.push(data[0].values_at("summary")[0].values_at("isbn")[0])
-            @resultitems.push(data[0].values_at("summary")[0].values_at("title")[0])
-            @resultitems.push(data[0].values_at("summary")[0].values_at("author")[0])
-            @resultitems.push(data[0].values_at("summary")[0].values_at("cover")[0])
-            @resultitems.push(data[0].values_at("summary")[0].values_at("publisher")[0])
-          end
-        end 
+        @item << item
+        idx += 1
       end
-    end #def
-  
-    def keysearch
-      if current_user.present?
-        @redirect = "keysearch"
+      @resultitems = []
+      @item.map!{|v|  v = v.isbn} 
+      @item.each do |itemb|
+        url = "https://api.openbd.jp/v1/get?isbn=%20#{itemb}"
+        uri = URI(url)
+        response = Net::HTTP.get(uri)
+        data = JSON.parse(response)
+        if data[0] == nil
+          p 'openbd済まぬ'
+          item = RakutenWebService::Books::Book.search(isbn: itemb)
+          @resultitems.push(item.first.isbn)
+          @resultitems.push(item.first.title)
+          @resultitems.push(item.first.author)
+          @resultitems.push(item.first.large_image_url)
+          @resultitems.push(item.first.publisher_name)
+        else
+          @resultitems.push(data[0].values_at('summary')[0].values_at('isbn')[0])
+          @resultitems.push(data[0].values_at('summary')[0].values_at('title')[0])
+          @resultitems.push(data[0].values_at('summary')[0].values_at('author')[0])
+          @resultitems.push(data[0].values_at('summary')[0].values_at('cover')[0])
+          @resultitems.push(data[0].values_at('summary')[0].values_at('publisher')[0])
+        end
+      end 
+    end
+  end #def
+
+  def keysearch
+    if current_user.present?
+      @redirect = "keysearch"
         @bookmarks = Bookmark.where(user_id: current_user.id)
         @books = current_user.books
       end
@@ -133,8 +135,8 @@ class ItemsController < ApplicationController
           end
         end
         @idx_items.each do |item|
-        p item.title
-        @flag = 3
+          p item.title
+          @flag = 3
           #rejected.each do |s|
            # if /#{s}/ === i.title
              # flag = 1
@@ -191,7 +193,6 @@ class ItemsController < ApplicationController
         #  [i.isbn]
         #end
       #end
-
     end
     private
 
