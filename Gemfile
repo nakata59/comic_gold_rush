@@ -84,3 +84,4 @@ gem "dockerfile-rails", ">= 1.4", :group => :development
 gem "pg", "~> 1.5"
 
 gem "meta-tags"
+gem 'high_voltage'

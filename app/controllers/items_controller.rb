@@ -104,7 +104,7 @@ class ItemsController < ApplicationController
       @item_reborn = params[:item]
       if params[:keyword] && params[:keyword].size != 0
         @itema = []
-        genre_list = {"少年" => "001001001","少女" => "001001002", "青年" => "001001003", "レディース" => "001001004","文庫" => "001001006", "その他" => "001001012"}
+        genre_list = {"漫画全般" => "001001","少年" => "001001001","少女" => "001001002", "青年" => "001001003", "レディース" => "001001004","文庫" => "001001006", "その他" => "001001012"}
         if params[:genre] == nil
           genre = "001001"
         else

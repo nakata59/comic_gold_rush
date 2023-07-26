@@ -1,25 +1,24 @@
 <div class="container">
   <div class="row">
-    <div class="col-md-10 offset-md-1 col-lg-8 offset-lg-2">
-      <h1>ユーザー登録</h1>
+    <div class="col-md-10 offset-md-1 col-lg-8 offset-lg-2 text-center">
       <%= form_with model: @user, local: true do |f| %>
         <div>
-        <%= f.label :name %>
-        <%= f.text_field :name, class: 'bg-red-500' %>
+        <%= f.label :name, class: '' %>
+        <%= f.text_field :name, class: 'mx-auto form-control block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 mb-4' %>
         </div>
         <div class="form-group">
           <%= f.label :email %>
-          <%= f.email_field :email, class: 'form-control' %>
+          <%= f.email_field :email, class: 'mx-auto form-control block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 mb-4' %>
         </div>
         <div class="form-group">
           <%= f.label :password %>
-          <%= f.password_field :password, class: 'form-control' %>
+          <%= f.password_field :password, class: 'mx-auto form-control block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 mb-4' %>
         </div>
         <div class="form-group">
           <%= f.label :password_confirmation %>
-          <%= f.password_field :password_confirmation, class: 'form-control' %>
+          <%= f.password_field :password_confirmation, class: 'mx-auto form-control block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 mb-4' %>
         </div>
-        <%= f.submit '登録', class: 'btn btn-primary' %>
+        <%= f.submit '登録', class: 'my-3.5 btn btn-primary text-white transition duration-500 ease-in-out transform bg-blue-600 lg:px-10 rounded-xl hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 mb-4' %>
       <% end %>
       <div class='text-center'>
         <%= link_to 'ログインページへ', login_path %>
