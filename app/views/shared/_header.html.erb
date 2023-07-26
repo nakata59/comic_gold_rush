@@ -1,9 +1,9 @@
 
-<header class = "absolute top-0 flex" style = "width: 90vw;">
+<header class = "absolute top-0 left-0 flex" style = "width: 95vw;">
   <div>
     <%= image_tag 'logo.png',class:"w-28 my-1" %>
   </div>
-<div class = "w-auto absolute right-0 my-8">
+<div class = "w-auto absolute right-5 my-8">
   <ul class = "flex"> 
     <li class = "mx-3.5"> 
       <%= link_to "探す", items_search_path %>
@@ -12,9 +12,6 @@
       <%= link_to "キーワードから探す", items_keysearch_path %>
     </li>
     <li class = "mx-3.5"> 
-      <%= link_to "気になるリスト", user_bookmarks_path(current_user) %>
-    </li>
-    <li> 
       <%= link_to "ユーザーを探す", users_path %>
     </li>
     <li class = "mx-3.5"> 

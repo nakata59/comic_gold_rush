@@ -1,15 +1,15 @@
 <div class="search-box">
     <%= form_with url: items_keysearch_path, method: :get, remote: true do |f| %>
-    <div class="form-group">
-      <div>
+    <div class="form-group flex my-5">
+      <div class= "mx-5" >
         キーワード:
-        <%= f.text_field :keyword, value: params[:keyword], class: "form-control" %>
+        <%= f.text_field :keyword, value: params[:keyword], class: "form-control mx-auto form-control shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2" %>
       </div>
-      <div class = "my-2">
+      <div class = "">
         ジャンル:
-        <%=  f.select(:genre, ["少年", "少女", "青年","レディース","文庫","その他"]) %>
+        <%= f.select :genre, ["漫画全般","少年", "少女", "青年","レディース","文庫","その他"], {}, { class: "w-auto mx-auto form-control shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2" } %>
       </div>
-        <%= f.submit '漫画を検索', class: "px-2 py-1 bg-blue-400 text-xl text-white font-semibold rounded hover:bg-blue-500", onclick: "buttonClick()" %>
+        <%= f.submit '漫画を検索', class: "ml-5 px-2 bg-yellow-500 text-xl text-white font-semibold rounded hover:bg-yellow-300", onclick: "buttonClick()" %>
     </div>
     <% end %>
 </div>
@@ -18,7 +18,7 @@
   <lottie-player src="https://assets6.lottiefiles.com/packages/lf20_a2chheio.json"  background="#FFFFFF"  speed="0.5"  style="width: 80vw; height: 20vw;"  loop  autoplay></lottie-player>
 </div>
 <% if @resultitems.present? %>
-  <div class="my-2 border-solid border-t-2 border-purple-900">
+  <div class="my-2>
   <% @resultitems.flatten.each_slice(5).to_a.each do |n| %>
     <%= render partial: 'shared/item', locals: { n: n } %>
   <% end %>

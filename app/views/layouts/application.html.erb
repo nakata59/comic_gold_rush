@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Books</title>
+    <title>ComicGoldRush</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -20,8 +20,8 @@
     gtag('config', 'G-2XGZZ9J31Z');
   </script>
 
-  <body>
-    <main class="container mx-auto mt-28 px-5">
+  <body style = "background-image: radial-gradient(#e5d65d 0.5px, #ffffff 0.5px); background-size: 10px 10px;">
+    <main class="container mx-0 px-0 mt-28 w-full">
       <% if logged_in? %>
         <%= render 'shared/header' %>
       <% else %>
