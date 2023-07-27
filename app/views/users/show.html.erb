@@ -17,10 +17,9 @@
   </div>
 </div>
 <% if @user_books.present? %>
-  <div class="mx-auto">
+  <div class="ml-14", style="width:85vw;">
     <% @user_books.flatten.each_slice(5).to_a.each do |n| %>
       <%= render partial: 'shared/item', locals: { n: n } %>
     <% end %>
-   </div>
-
+  </div>
 <% end %>

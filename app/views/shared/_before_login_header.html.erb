@@ -1,16 +1,18 @@
-<header class = "absolute top-0 h-28 w-screen bg-white">
-<div class = "w-auto absolute right-0 my-8 bg-white">
-  <ul class = "flex"> 
-    <li class = "mx-3.5"> 
-      <%= link_to "探す", items_search_path %>
-    </li>
-    <li> 
-      <%= link_to "キーワードから探す", items_keysearch_path %>
-    </li>
-    <li class = "mx-3.5"> 
-      <%= link_to 'ログイン', login_path ,class: 'nav-link' %>
-    </li>
-
-  </ul>  
-</div>
+<header class = "absolute flex top-0 h-28 w-screen bg-white">
+  <div class = "m-3">
+    <%= image_tag 'logo.png',class:"w-28 my-1" %>
+  </div>
+  <div class = "w-auto absolute right-0 my-8 pr-10 bg-white">
+    <ul class = "flex"> 
+      <li class = "mx-3.5"> 
+        <%= link_to "探す", items_search_path %>
+      </li>
+      <li> 
+        <%= link_to "キーワードから探す", items_keysearch_path %>
+      </li>
+      <li class = "mx-3.5"> 
+        <%= link_to 'ログイン', login_path ,class: 'nav-link' %>
+      </li>
+    </ul>  
+  </div>
 </header>

@@ -23,7 +23,7 @@
 <lottie-player src="https://assets6.lottiefiles.com/packages/lf20_a2chheio.json"  background="#FFFFFF"  speed="0.5"  style="width: 80vw; height: 20vw;"  loop  autoplay></lottie-player>
 </div>
 <% if @resultitems.present? %>
-  <div class="my-2 place-content-center" style="width:90vw;">
+  <div class="my-2 place-content-center ml-14" style="width:85vw;">
     <% @resultitems.flatten.each_slice(5).to_a.each do |n| %>
       <%= render partial: 'shared/item', locals: { n: n } %>
     <% end %>

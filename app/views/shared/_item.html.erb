@@ -15,11 +15,11 @@
         <div class= "flex">
         <% if current_user.present? %>
           <%= render 'shared/favorite_button', { isbn: n[0], favorited: @books.where(isbn:n[0].to_i).count > 0 } %>
-          <%= link_to 'Share on Twitter', "https://twitter.com/share?url=https://comicgoldrush.fly.dev&text=#{current_user.name}さんは%0a#{n[1]}と出会いました%0a", 
-          title: 'Twitter',class:"mx-[2.125vw] px-2 py-1 bg-blue-400 text-xl text-white font-semibold rounded hover:bg-blue-500",style:"width:15vw; font-size:1.6vw;", target: '_blank' %>
+          <%= link_to 'Share', "https://twitter.com/share?url=https://comicgoldrush.fly.dev&text=#{current_user.name}さんは%0a#{n[1]}と出会いました%0a", 
+          title: 'Twitter',class:"mx-[2.125vw] px-2 py-1 bg-white text-xl text-yellow-500 font-semibold rounded hover:bg-zinc-200",style:"width:6vw; font-size:1.6vw;", target: '_blank' %>
         <% else %>
-        <%= link_to 'Share on Twitter', "https://twitter.com/share?url=https://comicgoldrush.fly.dev&text=ゲストさんは%0a#{n[1]}と出会いました%0a", 
-        title: 'Twitter',class:"mx-[2.125vw] px-2 py-1 bg-blue-400 text-xl text-white font-semibold rounded hover:bg-blue-500",style:"width:15vw; font-size:1.6vw;", target: '_blank' %>
+        <%= link_to 'Share', "https://twitter.com/share?url=https://comicgoldrush.fly.dev&text=ゲストさんは%0a#{n[1]}と出会いました%0a", 
+        title: 'Twitter',class:"mx-[2.125vw] px-2 py-1 bg-white text-xl text-white font-semibold rounded hover:bg-zinc-200",style:"width:6vw; font-size:1.6vw;", target: '_blank' %>
         <% end %>
         </div>
       </div>
