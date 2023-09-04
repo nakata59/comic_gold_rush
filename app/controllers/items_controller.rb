@@ -76,7 +76,7 @@ class ItemsController < ApplicationController
         uri = URI(url)
         response = Net::HTTP.get(uri)
         data = JSON.parse(response)
-        if data[0] == nil
+        if data[0] == nil || data[0].values_at('summary')[0].values_at('cover')[0].size == 0
           p 'openbd済まぬ'
           item = RakutenWebService::Books::Book.search(isbn: itemb)
           @resultitems.push(item.first.isbn)
@@ -171,7 +171,7 @@ class ItemsController < ApplicationController
             uri = URI(url)
             response = Net::HTTP.get(uri)
             data = JSON.parse(response)
-            if data[0] == nil
+            if data[0] == nil || data[0].values_at('summary')[0].values_at('cover')[0].size == 0
               p "openbd済まぬ"
               item = RakutenWebService::Books::Book.search(isbn: itemb)
               @resultitems.push(item.first.isbn)
